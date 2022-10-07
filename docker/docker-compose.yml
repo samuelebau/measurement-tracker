@@ -1,0 +1,28 @@
+version: "3"
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs:cached
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:delegated
+      - ./nginx/nginx.tmpl:/app/nginx.tmpl:cached
+    environment:
+      - HTTPS_METHOD=noredirect
+    networks:
+      - default
+  node:
+    build: ./node
+    volumes:
+      - ../src/app:/src/app
+    environment:
+      VIRTUAL_HOST: "${VIRTUAL_HOST}"
+      VIRTUAL_PORT: "${VIRTUAL_PORT}"
+      PORT: "${PORT}"
+    networks:
+      - default
+networks:
+  default:
