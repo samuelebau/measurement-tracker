@@ -23,9 +23,7 @@ exec:
 gatsby:
 	make exec CMD="gatsby ${CMD}"
 start:
-	make exec CMD="yarn dev"
-format:
-	make exec CMD="yarn format"
+	make exec CMD="npm start"
 start-devbox:
 	${docker_compose} up -d
 purge-devbox:

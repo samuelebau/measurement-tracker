@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const prova = process.env.TEST;
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React {prova}
+          Learn React {process.env.REACT_APP_TEST}
         </a>
       </header>
     </div>
