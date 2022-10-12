@@ -127,7 +127,7 @@ function RestrictedArea(props) {
                                             value={values.password}
                                             error={touched.password && errors.password}
                                             helperText={touched.password && errors.password && <ErrorMessage
-                                                name="email"
+                                                name="password"
                                                 component="span"
                                                 className="invalid-feedback"
                                             />}
