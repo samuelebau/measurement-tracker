@@ -26,6 +26,13 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 
+// Form functionalities Dependencies
+import moment from 'moment';
+import ErrorIcon from '@mui/icons-material/Error';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Formik } from "formik";
+import { object, number } from 'yup';
+
 function App() {
     const theme = createTheme({
         breakpoints: {
@@ -325,6 +332,30 @@ function App() {
         }
     });
 
+    const [expanded, setExpanded] = useState("");
+    const handleTabChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    const validationSchema = object().shape({
+        peso: number().max(300).required(),
+        spalle: number().max(300).required(),
+        fianchi: number().max(300).required(),
+        torace: number().max(300).required(),
+        addome_vita: number().max(300).required(),
+        addome_contorno: number().max(300).required(),
+        coscia_dx: number().max(300).required(),
+        coscia_sx: number().max(300).required(),
+        polpaccio_dx: number().max(300).required(),
+        polpaccio_sx: number().max(300).required(),
+        avambraccio_sx: number().max(300).required(),
+        avambraccio_dx: number().max(300).required(),
+        bicipite_dx_relaxed: number().max(300).required(),
+        bicipite_dx_contracted: number().max(300).required(),
+        bicipite_sx_relaxed: number().max(300).required(),
+        bicipite_sx_contracted: number().max(300).required(),
+    });
+
     const StyledFab = styled(Fab)({
         position: 'absolute',
         zIndex: 1,
@@ -334,324 +365,573 @@ function App() {
         margin: '0 auto',
     });
 
-    const [expanded, setExpanded] = useState(false);
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
     return (
         <ThemeProvider theme={theme}>
             <RestrictedArea>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                Measurement Tracker
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
-                    <Container maxWidth="xl">
-                        <Stack spacing={2} mt={2} mb={2}>
-                            <Paper elevation={3} >
-                                <Accordion TransitionProps={{ unmountOnExit: true }}
-                                           expanded={expanded === 'general_torso'} onChange={handleChange('general_torso')}
-                                >
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography>General & Torso</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Peso"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">kg</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Spalle"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Fianchi"
-                                                        helperText="4 dita sotto obliqui"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Torace"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Vita"
-                                                        helperText="Ombelico"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Contorno"
-                                                        helperText="4 dita sopra ombelico"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Paper>
-                            <Paper elevation={3} >
-                                <Accordion TransitionProps={{ unmountOnExit: true }}
-                                           expanded={expanded === 'gambe_polpacci'} onChange={handleChange('gambe_polpacci')}
-                                >
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography>Coscie & Polpacci</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Gamba DX"
-                                                        helperText="Appena sotto il pene"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Gamba SX"
-                                                        helperText="Appena sotto il pene"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Polpaccio DX"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Polpaccio SX"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Paper>
-                            <Paper elevation={3} >
-                                <Accordion TransitionProps={{ unmountOnExit: true }}
-                                           expanded={expanded === 'avambracci_bicipiti'} onChange={handleChange('avambracci_bicipiti')}
-                                >
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography>Avambracci & Bicipiti</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Avambraccio DX"
-                                                        helperText="4 dita dal gomito"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Avambraccio SX"
-                                                        helperText="4 dita dal gomito"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Bicipite DX"
-                                                        helperText="Contracted"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Bicipite SX"
-                                                        helperText="Contracted"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Bicipite DX"
-                                                        helperText="Relaxed"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <TextField
-                                                        label="Bicipite SX"
-                                                        helperText="Relaxed"
-                                                        variant="standard"
-                                                        type='number'
-                                                        step="0.1"
-                                                        max="999.9"
-                                                        InputProps={{
-                                                            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                                                        }}
-                                                        fullWidth
-                                                    />
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Paper>
-                        </Stack>
-                    </Container>
-                    <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-                        <Toolbar>
-                            <StyledFab color="secondary" aria-label="add">
-                                <AddIcon />
-                            </StyledFab>
-                        </Toolbar>
-                    </AppBar>
-                </Box>
+                <Formik
+                    initialValues={{
+                        peso: '',
+                        spalle: '',
+                        fianchi: '',
+                        torace: '',
+                        addome_vita: '',
+                        addome_contorno: '',
+                        coscia_dx: '',
+                        coscia_sx: '',
+                        polpaccio_dx: '',
+                        polpaccio_sx: '',
+                        avambraccio_sx: '',
+                        avambraccio_dx: '',
+                        bicipite_dx_relaxed: '',
+                        bicipite_dx_contracted: '',
+                        bicipite_sx_relaxed: '',
+                        bicipite_sx_contracted: '',
+                    }}
+                    validateOnChange
+                    validationSchema={validationSchema}
+                    onSubmit={(values, actions) => {
+                        const data = {
+                            data: moment().format('DD/MM/YYYY'),
+                            ...values
+                        }
+                        console.clear();
+                        console.log(JSON.stringify(data));
+                    }}
+                >
+                    {({
+                          handleChange,
+                          handleSubmit,
+                          handleBlur,
+                          errors,
+                          values,
+                          touched,
+                          isSubmitting
+                      }) => (
+                          <form onSubmit={handleSubmit} autocomplete="off">
+                            <Box sx={{ flexGrow: 1 }}>
+                                <AppBar position="static">
+                                    <Toolbar>
+                                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                            Measurement Tracker
+                                        </Typography>
+                                    </Toolbar>
+                                </AppBar>
+                                <Container maxWidth="xl">
+                                    <Stack as="form" onSubmit={handleSubmit} spacing={2} mt={2} mb={2}>
+                                        <Paper elevation={3} >
+                                            <Accordion TransitionProps={{ unmountOnExit: true }}
+                                                       expanded={expanded === 'general_torso'} onChange={handleTabChange('general_torso')}
+                                            >
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography sx={{fontWeight: '700'}}>General & Torso</Typography>
+                                                    <Typography sx={{
+                                                        fontWeight: '700',
+                                                        color: 'error.main',
+                                                        display: (
+                                                            (touched.peso && errors.peso) ||
+                                                            (touched.spalle && errors.spalle) ||
+                                                            (touched.fianchi && errors.fianchi) ||
+                                                            (touched.torace && errors.torace) ||
+                                                            (touched.addome_vita && errors.addome_vita) ||
+                                                            (touched.addome_contorno && errors.addome_contorno)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <ErrorIcon/>
+                                                    </Typography>
+                                                    <Typography sx={{
+                                                        color: 'success.main',
+                                                        display: (
+                                                            (touched.peso && !errors.peso) &&
+                                                            (touched.spalle && !errors.spalle) &&
+                                                            (touched.fianchi && !errors.fianchi) &&
+                                                            (touched.torace && !errors.torace) &&
+                                                            (touched.addome_vita && !errors.addome_vita) &&
+                                                            (touched.addome_contorno && !errors.addome_contorno)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <CheckCircleIcon/>
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="peso"
+                                                                    label="Peso"
+                                                                    name="peso"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.peso}
+                                                                    error={errors.peso && touched.peso}
+                                                                    helperText=" "
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="spalle"
+                                                                    label="Spalle"
+                                                                    name="spalle"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.spalle}
+                                                                    error={touched.spalle && errors.spalle}
+                                                                    helperText=" "
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="fianchi"
+                                                                    label="Fianchi"
+                                                                    name="fianchi"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.fianchi}
+                                                                    error={touched.fianchi && errors.fianchi}
+                                                                    helperText="4 dita sotto obliqui"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="torace"
+                                                                    label="Torace"
+                                                                    name="torace"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.torace}
+                                                                    error={touched.torace && errors.torace}
+                                                                    helperText="4 dita sotto obliqui"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="addome_vita"
+                                                                    label="Vita"
+                                                                    name="addome_vita"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.addome_vita}
+                                                                    error={touched.addome_vita && errors.addome_vita}
+                                                                    helperText="Ombelico"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="addome_contorno"
+                                                                    label="Contorno"
+                                                                    name="addome_contorno"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.addome_contorno}
+                                                                    error={touched.addome_contorno && errors.addome_contorno}
+                                                                    helperText="4 dita sopra ombelico"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                    </Grid>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </Paper>
+                                        <Paper elevation={3} >
+                                            <Accordion TransitionProps={{ unmountOnExit: true }}
+                                                       expanded={expanded === 'gambe_polpacci'} onChange={handleTabChange('gambe_polpacci')}
+                                            >
+
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography sx={{fontWeight: '700'}}>Coscie & Polpacci</Typography>
+                                                    <Typography sx={{
+                                                        fontWeight: '700',
+                                                        color: 'error.main',
+                                                        display: (
+                                                            (touched.coscia_dx && errors.coscia_dx) ||
+                                                            (touched.coscia_sx && errors.coscia_sx) ||
+                                                            (touched.polpaccio_dx && errors.polpaccio_dx) ||
+                                                            (touched.polpaccio_sx && errors.polpaccio_sx)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <ErrorIcon/>
+                                                    </Typography>
+                                                    <Typography sx={{
+                                                        color: 'success.main',
+                                                        display: (
+                                                            (touched.coscia_dx && !errors.coscia_dx) &&
+                                                            (touched.coscia_sx && !errors.coscia_sx) &&
+                                                            (touched.polpaccio_dx && !errors.polpaccio_dx) &&
+                                                            (touched.polpaccio_sx && !errors.polpaccio_sx)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <CheckCircleIcon/>
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="coscia_dx"
+                                                                    label="Gamba DX"
+                                                                    name="coscia_dx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.coscia_dx}
+                                                                    error={touched.coscia_dx && errors.coscia_dx}
+                                                                    helperText="Appena sotto il pene"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="coscia_sx"
+                                                                    label="Gamba SX"
+                                                                    name="coscia_sx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.coscia_sx}
+                                                                    error={touched.coscia_sx && errors.coscia_sx}
+                                                                    helperText="Appena sotto il pene"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="polpaccio_dx"
+                                                                    label="Polpaccio DX"
+                                                                    name="polpaccio_dx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.polpaccio_dx}
+                                                                    error={touched.polpaccio_dx && errors.polpaccio_dx}
+                                                                    helperText=" "
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="polpaccio_sx"
+                                                                    label="Polpaccio SX"
+                                                                    name="polpaccio_sx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.polpaccio_sx}
+                                                                    error={touched.polpaccio_sx && errors.polpaccio_sx}
+                                                                    helperText=" "
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                    </Grid>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </Paper>
+                                        <Paper elevation={3} >
+                                            <Accordion TransitionProps={{ unmountOnExit: true }}
+                                                       expanded={expanded === 'avambracci_bicipiti'} onChange={handleTabChange('avambracci_bicipiti')}
+                                            >
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography sx={{fontWeight: '700'}}>Avambracci & Bicipiti</Typography>
+                                                    <Typography sx={{
+                                                        fontWeight: '700',
+                                                        color: 'error.main',
+                                                        display: (
+                                                            (touched.avambraccio_dx && errors.avambraccio_dx) ||
+                                                            (touched.avambraccio_sx && errors.avambraccio_sx) ||
+                                                            (touched.bicipite_dx_contracted && errors.bicipite_dx_contracted) ||
+                                                            (touched.bicipite_sx_contracted && errors.bicipite_sx_contracted) ||
+                                                            (touched.bicipite_dx_relaxed && errors.bicipite_dx_relaxed) ||
+                                                            (touched.bicipite_sx_relaxed && errors.bicipite_sx_relaxed)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <ErrorIcon/>
+                                                    </Typography>
+                                                    <Typography sx={{
+                                                        color: 'success.main',
+                                                        display: (
+                                                            (touched.avambraccio_dx && !errors.avambraccio_dx) &&
+                                                            (touched.avambraccio_sx && !errors.avambraccio_sx) &&
+                                                            (touched.bicipite_dx_contracted && !errors.bicipite_dx_contracted) &&
+                                                            (touched.bicipite_sx_contracted && !errors.bicipite_sx_contracted) &&
+                                                            (touched.bicipite_dx_relaxed && !errors.bicipite_dx_relaxed) &&
+                                                            (touched.bicipite_sx_relaxed && !errors.bicipite_sx_relaxed)
+                                                        ) ? 'block' : 'none'
+                                                    }}>
+                                                        <CheckCircleIcon/>
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="avambraccio_dx"
+                                                                    label="Avambraccio DX"
+                                                                    name="avambraccio_dx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.avambraccio_dx}
+                                                                    error={touched.avambraccio_dx && errors.avambraccio_dx}
+                                                                    helperText="4 dita dal gomito"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="avambraccio_sx"
+                                                                    label="Avambraccio SX"
+                                                                    name="avambraccio_sx"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.avambraccio_sx}
+                                                                    error={touched.avambraccio_sx && errors.avambraccio_sx}
+                                                                    helperText="4 dita dal gomito"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="bicipite_dx_contracted"
+                                                                    label="Bicipite DX"
+                                                                    name="bicipite_dx_contracted"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.bicipite_dx_contracted}
+                                                                    error={touched.bicipite_dx_contracted && errors.bicipite_dx_contracted}
+                                                                    helperText="Contracted"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="bicipite_sx_contracted"
+                                                                    label="Bicipite SX"
+                                                                    name="bicipite_sx_contracted"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.bicipite_sx_contracted}
+                                                                    error={touched.bicipite_sx_contracted && errors.bicipite_sx_contracted}
+                                                                    helperText="Contracted"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="bicipite_dx_relaxed"
+                                                                    label="Bicipite DX"
+                                                                    name="bicipite_dx_relaxed"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.bicipite_dx_relaxed}
+                                                                    error={touched.bicipite_dx_relaxed && errors.bicipite_dx_relaxed}
+                                                                    helperText="Relaxed"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <FormControl fullWidth>
+                                                                <TextField
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    id="bicipite_sx_relaxed"
+                                                                    label="Bicipite SX"
+                                                                    name="bicipite_sx_relaxed"
+                                                                    type='number'
+                                                                    step="0.1"
+                                                                    max="999.9"
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={isSubmitting}
+                                                                    value={values.bicipite_sx_relaxed}
+                                                                    error={touched.bicipite_sx_relaxed && errors.bicipite_sx_relaxed}
+                                                                    helperText="Relaxed"
+                                                                    InputProps={{
+                                                                        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                        </Grid>
+                                                    </Grid>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </Paper>
+                                    </Stack>
+                                </Container>
+                                <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+                                    <Toolbar>
+                                        <StyledFab color="secondary" aria-label="add" type="submit" disabled={isSubmitting}>
+                                            <AddIcon />
+                                        </StyledFab>
+                                    </Toolbar>
+                                </AppBar>
+                            </Box>
+                        </form>
+                    )}
+                </Formik>
             </RestrictedArea>
         </ThemeProvider>
     );
