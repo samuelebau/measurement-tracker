@@ -399,7 +399,7 @@ function App() {
                             alert(JSON.stringify(response));
                             actions.setSubmitting(false);
                         }).catch(error => {
-                            console.log(response);
+                            console.log(error);
                             alert(JSON.stringify(error));
                             actions.setSubmitting(false);
                         })
