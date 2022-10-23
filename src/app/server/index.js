@@ -16,10 +16,10 @@ const {
 } = require('./googleSheetsServices/googleSheetsService.js');
 
 
-// const getMeasurementsAction = async (req,res) => {
-//     const response = await getSpreadSheetValues({spreadsheetId, sheetName});
-//     res.json(response);
-// }
+const getMeasurementsAction = async (req,res) => {
+    const response = await getSpreadSheetValues({spreadsheetId, sheetName});
+    res.json(response);
+}
 
 const addMeasurementAction = async (req, res) => {
     const dataToAppend = req.body;
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "..", "build")));
-//app.get("/get-measurements",asyncHandler(getMeasurementsAction));
+app.get("/get-measurements",asyncHandler(getMeasurementsAction));
 app.post("/add-measurement",asyncHandler(addMeasurementAction));
 
 
