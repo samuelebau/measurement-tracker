@@ -22,6 +22,7 @@ services:
       VIRTUAL_HOST: "${VIRTUAL_HOST}"
       VIRTUAL_PORT: "${VIRTUAL_PORT}"
       PORT: "${PORT}"
+      NODE_ENV: "${NODE_ENV}"
     networks:
       - default
 networks:

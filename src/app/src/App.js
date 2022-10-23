@@ -32,6 +32,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Formik } from "formik";
 import { object, number } from 'yup';
+import axios from 'axios';
 
 function App() {
     const theme = createTheme({
@@ -390,12 +391,16 @@ function App() {
                     validateOnChange
                     validationSchema={validationSchema}
                     onSubmit={(values, actions) => {
-                        const data = {
-                            data: moment().format('DD/MM/YYYY'),
-                            ...values
-                        }
-                        console.clear();
-                        console.log(JSON.stringify(data));
+                        axios.post("/add-measurement", {
+                            ...values,
+                            data: moment().format('DD/MM/YYYY')
+                        }).then(response => {
+                            alert(JSON.stringify(response));
+                            actions.setSubmitting(false);
+                        }).catch(error => {
+                            alert(JSON.stringify(error));
+                            actions.setSubmitting(false);
+                        })
                     }}
                 >
                     {({
