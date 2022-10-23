@@ -53,14 +53,18 @@ async function appendDataToSpreadsheet({spreadsheetId, sheetName, dataToAppend})
     const resource = {
         values,
     };
-    return await new Promise(resolve => {
-        return resolve(sheetToAppend.spreadsheets.values.append({
-            spreadsheetId: spreadsheetId,
-            range: sheetName,
-            valueInputOption: 'USER_ENTERED',
-            resource: resource
-        }));
-    });
+    try {
+        return await new Promise(resolve => {
+            return resolve(sheetToAppend.spreadsheets.values.append({
+                spreadsheetId: spreadsheetId,
+                range: sheetName,
+                valueInputOption: 'USER_ENTERED',
+                resource: resource
+            }));
+        });
+    } catch (err) {
+        throw err;
+    }
 }
 
 

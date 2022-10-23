@@ -395,9 +395,11 @@ function App() {
                             ...values,
                             data: moment().format('DD/MM/YYYY')
                         }).then(response => {
+                            console.log(response);
                             alert(JSON.stringify(response));
                             actions.setSubmitting(false);
                         }).catch(error => {
+                            console.log(response);
                             alert(JSON.stringify(error));
                             actions.setSubmitting(false);
                         })
