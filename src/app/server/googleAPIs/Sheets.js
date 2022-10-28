@@ -1,9 +1,10 @@
 const { google } = require('googleapis');
 const path = require("path");
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const dotenv = require('dotenv');
 if (process.env.NODE_ENV !== "production") {
-    dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+    const dotenv = require('dotenv');
+    let envFile = path.join(__dirname,'..','..','.env.'+process.env.NODE_ENV);
+    dotenv.config({ path: envFile });
 }
 
 async function getAuthToken() {
@@ -17,15 +18,19 @@ async function getAuthToken() {
 }
 
 async function getSpreadSheetValues({spreadsheetId, sheetName}) {
-    const auth = await getAuthToken();
-    const sheets = google.sheets({version: 'v4', auth: auth});
-    return await new Promise(resolve => {
-        return resolve(sheets.spreadsheets.values.get({
-            spreadsheetId,
-            auth,
-            range: sheetName
-        }));
-    });
+    try {
+        const auth = await getAuthToken();
+        const sheets = google.sheets({version: 'v4', auth: auth});
+        return await new Promise(resolve => {
+            return resolve(sheets.spreadsheets.values.get({
+                spreadsheetId,
+                auth,
+                range: sheetName
+            }));
+        });
+    } catch (e) {
+        console.trace(e);
+    }
 }
 
 async function appendDataToSpreadsheet({spreadsheetId, sheetName, dataToAppend}) {
