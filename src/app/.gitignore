@@ -26,4 +26,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-google-credentials.json
+server/googleAPIs/google-credentials.json
