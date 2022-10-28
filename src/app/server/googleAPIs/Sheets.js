@@ -17,22 +17,6 @@ async function getAuthToken() {
     });
 }
 
-async function getSpreadSheetValues({spreadsheetId, sheetName}) {
-    try {
-        const auth = await getAuthToken();
-        const sheets = google.sheets({version: 'v4', auth: auth});
-        return await new Promise(resolve => {
-            return resolve(sheets.spreadsheets.values.get({
-                spreadsheetId,
-                auth,
-                range: sheetName
-            }));
-        });
-    } catch (e) {
-        console.trace(e);
-    }
-}
-
 async function appendDataToSpreadsheet({spreadsheetId, sheetName, dataToAppend}) {
     const auth = await getAuthToken();
     const sheetToAppend = google.sheets({version: 'v4', auth: auth});
@@ -74,6 +58,5 @@ async function appendDataToSpreadsheet({spreadsheetId, sheetName, dataToAppend})
 
 
 module.exports = {
-    getSpreadSheetValues,
     appendDataToSpreadsheet
 }

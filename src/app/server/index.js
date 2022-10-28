@@ -13,15 +13,7 @@ if (process.env.NODE_ENV !== "production") {
 const spreadsheetId = process.env.REACT_APP_GOOGLE_API_SHEETS_ID;
 const sheetName = process.env.REACT_APP_GOOGLE_API_SHEETS_NAME;
 
-const {
-    getSpreadSheetValues,
-    appendDataToSpreadsheet
-} = require('./googleAPIs/Sheets.js');
-
-const getMeasurementsAction = async (req,res) => {
-    const response = await getSpreadSheetValues({spreadsheetId, sheetName});
-    res.json(response);
-}
+const { appendDataToSpreadsheet } = require('./googleAPIs/Sheets.js');
 
 const addMeasurementAction = async (req, res) => {
     const dataToAppend = req.body;
@@ -45,8 +37,6 @@ app.get(/^(?!\/api).+/, function(req,res){
     res.redirect('/');
 });
 
-
-app.get("/api/get-measurements",asyncHandler(getMeasurementsAction));
 app.post("/api/add-measurement",asyncHandler(addMeasurementAction));
 
 // start express server on port 5000
