@@ -20,10 +20,10 @@ build-docker-services:
 	${docker_compose} build --build-arg UID=${CUR_UID} --build-arg GID=${CUR_GID} ${DOCKER_SERVICES_BUILD}
 exec:
 	${node_cli} ${CMD}
-gatsby:
-	make exec CMD="gatsby ${CMD}"
 start:
 	make exec CMD="yarn start"
+build:
+	make exec CMD="yarn build"
 start-devbox:
 	${docker_compose} up -d
 purge-devbox:
