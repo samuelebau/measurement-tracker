@@ -416,7 +416,7 @@ function App() {
               }) => (
                 <form onSubmit={handleSubmit} autocomplete="off">
                   <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
+                    <AppBar position="fixed">
                       <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                           Measurement Tracker
@@ -424,7 +424,7 @@ function App() {
                       </Toolbar>
                     </AppBar>
                     <Container maxWidth="xl">
-                      <Stack as="form" onSubmit={handleSubmit} spacing={2} mt={2} mb={2}>
+                      <Stack as="form" onSubmit={handleSubmit} spacing={2} mt={8} mb={8}>
                         <Paper elevation={3} >
                           <Accordion TransitionProps={{ unmountOnExit: true }}
                                      expanded={expanded === 'general_torso'} onChange={handleTabChange('general_torso')}
