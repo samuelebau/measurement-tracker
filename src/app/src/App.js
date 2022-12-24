@@ -30,6 +30,8 @@ import Stack from '@mui/material/Stack';
 import moment from 'moment';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { Formik } from "formik";
 import { object, number } from 'yup';
 import axios from 'axios';
@@ -334,9 +336,15 @@ function App() {
   });
 
   const [expanded, setExpanded] = useState("");
+  const [messageType, setMessageType] = useState("success");
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+
+
   const handleTabChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
 
   const validationSchema = object().shape({
     peso: number().max(300).required(),
@@ -395,12 +403,14 @@ function App() {
                   ...values,
                   data: moment().format('DD/MM/YYYY')
                 }).then(response => {
-                  console.log(response);
-                  alert(JSON.stringify(response));
+                  setShowMessage(true);
+                  setMessageType("success");
+                  setMessage(response.data.statusText);
                   actions.setSubmitting(false);
                 }).catch(error => {
-                  console.log(error);
-                  alert(JSON.stringify(error));
+                  setShowMessage(true);
+                  setMessageType("error");
+                  setMessage(error);
                   actions.setSubmitting(false);
                 })
               }}
@@ -936,6 +946,11 @@ function App() {
                       </Toolbar>
                     </AppBar>
                   </Box>
+                  <Snackbar open={showMessage} autoHideDuration={6000} onClose={() => setShowMessage(false)}>
+                    <Alert onClose={() => setShowMessage(false)} severity={messageType} sx={{ width: '100%' }}>
+                      {message}
+                    </Alert>
+                  </Snackbar>
                 </form>
             )}
           </Formik>
